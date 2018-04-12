@@ -22,8 +22,8 @@ Parameters:
 #include <stdbool.h>
 #include <float.h>
 
-void get_formatted_motion_data(char filename [], double acc_x [], double acc_y [],
-                                double acc_z [], double gyro_x [], double gyro_y [], double gyro_z []){
+void get_formatted_motion_data(char filename [], double x [], double y [],
+                                double z [], int file_length, int type){
   int i = 0;
   char * line = NULL;
   FILE * m_file;
@@ -33,6 +33,12 @@ void get_formatted_motion_data(char filename [], double acc_x [], double acc_y [
   int column = 0;
   int row = 0;
   double value = 0.0;
+  double temp_x[file_length];
+  double temp_y[file_length];
+  double temp_z[file_length];
+  double temp_gx[file_length];
+  double temp_gy[file_length];
+  double temp_gz[file_length];
   m_file = fopen(filename,"r");
   if(m_file == NULL){
     printf("File not found...");
@@ -48,22 +54,22 @@ void get_formatted_motion_data(char filename [], double acc_x [], double acc_y [
     while(items != NULL){
       switch(column){
         case 2:
-          acc_x[i] = atof(items);
+          temp_x[i] = atof(items);
           break;
         case 3:
-          acc_y[i] = atof(items);
+          temp_y[i] = atof(items);
           break;
         case 4:
-          acc_z[i] = atof(items);
+          temp_z[i] = atof(items);
           break;
         case 5:
-          gyro_x[i] = atof(items);
+          temp_gx[i] = atof(items);
           break;
         case 6:
-          gyro_y[i] = atof(items);
+          temp_gy[i] = atof(items);
           break;
         case 7:
-          gyro_z[i] = atof(items);
+          temp_gz[i] = atof(items);
           break;
         default:
           break;
@@ -74,6 +80,20 @@ void get_formatted_motion_data(char filename [], double acc_x [], double acc_y [
     row = row + 1;
     column = 1;
     i = i + 1;
+  }
+  if(type == 1){
+    for(i = 0; i < file_length; i++){
+      x[i] = temp_x[i];
+      y[i] = temp_y[i];
+      z[i] = temp_z[i];
+    }
+  }
+  if(type == 2){
+    for(i = 0; i < file_length; i++){
+    x[i] = temp_gx[i];
+    y[i] = temp_gy[i];
+    z[i] = temp_gz[i];
+    }
   }
   fclose(m_file);
 }

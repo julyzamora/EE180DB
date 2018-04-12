@@ -40,7 +40,6 @@ double displacement(double input [], int file_length){
 
   // destroy filter object
   iirfilt_crcf_destroy(q);
-
   // created files for debugging
   // FILE * outputfile;
   // FILE * firstfile;
@@ -55,6 +54,10 @@ double displacement(double input [], int file_length){
   // fclose(firstfile);
   // fclose(outputfile);
 
+  /*----------------------------
+  https://www.nxp.com/docs/en/application-note/AN3397.pdf
+  see this paper for implementation of formula
+  */
   double velocity [file_length];
   double curr_output;
   double prev_output;
@@ -76,6 +79,6 @@ double displacement(double input [], int file_length){
 
   }
   displacement = position[file_length] - position[0];
-  printf("%f\n", displacement);
+  // printf("%f\n", displacement);
   return displacement;
 }
